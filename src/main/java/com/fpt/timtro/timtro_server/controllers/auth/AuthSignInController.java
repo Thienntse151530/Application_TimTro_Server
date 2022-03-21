@@ -1,12 +1,11 @@
 package com.fpt.timtro.timtro_server.controllers.auth;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fpt.timtro.timtro_server.models.MessageSignInModel;
@@ -32,18 +31,18 @@ public class AuthSignInController {
 			return sb.toString();
 		}
 	  @PutMapping("/putAuthSignIn")
-	  boolean authSignInUser(@RequestBody UserModel userModel) {
+	  UserModel authSignInUser(@RequestBody UserModel userModel) {
 		 UserModel authUser = userRepository.getListOfUsers(userModel.getAccount(), userModel.getPassword());
-		 boolean check = false;
+		 
 		 if(authUser != null) {
 			 token = generateRandomPassword();
 			 System.out.println("--true--");
-			 check = true;
 		 }
-	    return check;
+	    return authUser;
 	  }
 	  
 	  @GetMapping("/getAuthSignIn")
+	  @ResponseBody
 	  MessageSignInModel getAuthSignInUser(){
 		  MessageSignInModel inModel = new MessageSignInModel();
 		  if(token != null) {
